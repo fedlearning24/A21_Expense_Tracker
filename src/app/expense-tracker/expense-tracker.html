@@ -1,0 +1,46 @@
+<div class="min-h-screen bg-gray-100 flex justify-center items-center">
+    <div class="bg-white w-full max-w-xl p-6 rounded-xl shadow-xl">
+        <h1 class="text-2xl font-bold text-center mb-4">
+            💰 Expense Tracker
+        </h1>
+
+        <div class="text-center mb-6">
+            <p class="text-gray-500">Balance</p>
+            <h2 class="text-3xl font-semibold" [class.text-green-600]="service.balance() >= 0"
+                [class.text-red-600]="service.balance() < 0">
+                {{ service.balance() | currency : 'INR' }}
+            </h2>
+        </div>
+
+        <div class="flex justify-between mb-6">
+            <div class="bg-green-100 text-green-700 p-3 rounded text-center w-1/2 mr-2">
+                <p>Income</p>
+                <p class="font-bold">{{ service.income() | currency : 'INR' }}</p>
+            </div>
+            <div class="bg-red-100 text-red-700 p-3 rounded text-center w-1/2 mr-2">
+                <p>Expense</p>
+                <p class="font-bold">{{ service.expense() | currency : 'INR' }}</p>
+            </div>
+        </div>
+
+        <input type="text" [(ngModel)]="text" class="w-full border p-2 rounded mb-2" placeholder="Description" />
+        <input type="number" [(ngModel)]="amount" class="w-full border p-2 rounded mb-2"
+            placeholder="Amount(+income,-expense)" />
+
+        <button class="w-full bg-blue-600 text-white rounded py-2 hover:bg-blue-700" (click)="addTransaction()">Add
+            Transaction</button>
+
+        <ul class="mt-6 space-y-2">
+            @for(t of service.transactions(); track t){
+            <li class="flex justify-between items-center border-l-4 p-2 rounded" [class.border-green-500]="t.amount > 0"
+                [class.border-red-500]="t.amount < 0">
+                <span>{{t.text}}</span>
+                <div class="flex items-center gap-2">
+                    <span>{{t.amount | currency : 'INR'}}</span>
+                    <button class="text-red-500 hover:text-red-700" (click)="removeTransaction(t.id)">✖</button>
+                </div>
+            </li>
+            }
+        </ul>
+    </div>
+</div>
